@@ -1,0 +1,8 @@
+global:
+  scrape_interval: 15
+health_configs:
+  - monitor_name: 'serverpings'
+    monitor_item:
+      uri: 
+        - 'server1/ping'
+      type: 'ping'

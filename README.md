@@ -18,3 +18,5 @@ Initial version
         - use cobra/viper to manage params
           - logging - set level
 
+Add pprof for performance profiling 
+- go to http://localhost:8080/debug/pprof/ to view performance metrics

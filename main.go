@@ -7,6 +7,8 @@ import (
 	"healthBridge/logger"
 	"healthBridge/service"
 	"healthBridge/ymlReader"
+
+	_ "net/http/pprof"
 )
 
 func main() {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
@@ -12,6 +13,16 @@ import (
 )
 
 func main() {
+
+	var flagvar int
+	flag.IntVar(&flagvar, "port", 8080, "the port number for the server to run on. Default 8080.")
+
+	//	configLocation := "C:\\src\\HealthBridge\\config.yml"
+	var configLocation string
+	flag.StringVar(&configLocation, "config", "", "the path to the yml config file describing the monitors")
+
+	logger.Flags()
+	flag.Parse()
 
 	//TODO - initialise logger
 
@@ -29,11 +40,11 @@ func main() {
 	for i, val := range os.Args {
 		logger.Debug(fmt.Sprintf("%v: %s", i, val))
 	}
-	var configLocation = os.Args[1]
-	fmt.Printf("Got file path %s\r\n", configLocation)
-
+	//var configLocation = os.Args[1]
 	//	fmt.Println(ymlReader.WriteConf())
-	//configLocation := "C:\\src\\HealthBridge\\config.yml"
+	//	configLocation := "C:\\src\\HealthBridge\\config.yml"
+
+	fmt.Printf("Got file path %s\r\n", configLocation)
 
 	if len(configLocation) == 0 {
 		panic("No path supplied for config file")

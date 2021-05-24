@@ -1,10 +1,24 @@
 package logger
 
-import "go.uber.org/zap"
+import (
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+)
+
+var (
+	Level zapcore.Level
+)
+
+func Flags() {
+	zap.LevelFlag("log-level", zap.ErrorLevel, "set the logging level")
+}
 
 func NewLogger() (*zap.Logger, error) {
 
-	logger, err := getDevConfig().Build()
+	var config = getDevConfig()
+	config.Level = zap.NewAtomicLevelAt(Level)
+
+	logger, err := config.Build()
 
 	return logger, err
 }

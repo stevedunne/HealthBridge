@@ -16,8 +16,8 @@ var (
 		Help: "Health gauge help.",
 	}, []string{"Name", "Type", "Host"})
 	gaugeHitCount = prometheus.NewCounterVec(prometheus.CounterOpts{
-		Name: "test_hit_count",
-		Help: "Test hit counter.",
+		Name: "healthbridge_hit_count",
+		Help: "healthbridge health test hit counter.",
 	}, []string{"Name", "Type", "Host"})
 )
 
@@ -59,14 +59,10 @@ func NewMetricManager(l *zap.Logger) *MetricManager {
 }
 
 //find a named gauge in the collection and update its value
-func (m *MetricManager) updateGauge(name, metricType, host string, val bool) {
-	logger.Debug(fmt.Sprintf("Updating gauges %s %v", name, val))
+func (m *MetricManager) updateGauge(name, metricType, host string, gaugeVal int) {
+	logger.Debug(fmt.Sprintf("Updating gauges %s %v", name, gaugeVal))
 
-	if val {
-		healthGauge.WithLabelValues(name, metricType, host).Set(0)
-	} else {
-		healthGauge.WithLabelValues(name, metricType, host).Set(1)
-	}
+	healthGauge.WithLabelValues(name, metricType, host).Set(float64(gaugeVal))
 
 	gaugeHitCount.WithLabelValues(name, metricType, host).Inc()
 }
@@ -82,7 +78,7 @@ func (manager *MetricManager) Run() {
 		select {
 		case record := <-manager.Channel:
 			logger.Debug(fmt.Sprintf("Received gauge update %s ", record.Name))
-			manager.updateGauge(record.Name, record.Type, record.Host, (record.Val == 1))
+			manager.updateGauge(record.Name, record.Type, record.Host, record.Val)
 		case <-manager.stopCh:
 			return
 		}

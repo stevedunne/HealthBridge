@@ -46,8 +46,8 @@ func (s *Service) AddMonitor(typeName, name, uri string, pollingInterval int) {
 	if err != nil {
 		s.logger.Warn(fmt.Sprintf("Failed to create monitor for %s %s [%s]", typeName, name, uri))
 	} else {
-		s.monitors[m.GetName()] = m
-		s.logger.Debug(fmt.Sprintf("Added monitor %s [%T] ", m.GetName(), m))
+		s.monitors[m.Identifier()] = m
+		s.logger.Debug(fmt.Sprintf("Added monitor %s [%T] ", m.Identifier(), m))
 	}
 }
 
@@ -72,7 +72,7 @@ func (s *Service) Start() error {
 	// }
 
 	for _, val := range s.monitors {
-		s.logger.Debug(fmt.Sprintf("Starting monitor %s [%T] ", val.GetName(), val))
+		s.logger.Debug(fmt.Sprintf("Starting monitor %s [%T] ", val.Identifier(), val))
 		val.Start()
 	}
 

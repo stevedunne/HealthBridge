@@ -2,40 +2,14 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"healthBridge/logger"
 	"healthBridge/service"
 	"healthBridge/ymlReader"
 )
 
-/*
-# ToDo:
-#  - Read config from yml
-#  - create service to contain all relevant processes
-#  - Read 'ping' end point for success/failure
-#  - create prometheus end point
-#  - run pingers as golang routines
-#  	- use channel to send back data
-#  - manage params cobra/viper
-#  - logging - set level
-*/
-
 func main() {
-
-	//TODO - validate args
-
-	// fmt.Println("Started")
-	// fmt.Printf("Got args %v\r\n", len(os.Args))
-	// if len(os.Args) == 0 {
-	// 	panic("No path supplied for config file")
-	// }
-	// for i, val := range os.Args {
-	// 	fmt.Printf("%v: %s\r\n", i, val)
-	// }
-	// var configLocation = os.Args[0]
-	// fmt.Printf("Got file path %s\r\n", configLocation)
-
-	//	fmt.Println(ymlReader.WriteConf())
 
 	//TODO - initialise logger
 
@@ -44,7 +18,21 @@ func main() {
 		panic("Could not initialize logger")
 	}
 
-	configLocation := "C:\\src\\HealthBridge\\config.yml"
+	//TODO - validate args
+
+	logger.Debug("Starting Health Monitor")
+	if len(os.Args) == 0 {
+		panic("No path supplied for config file")
+	}
+	for i, val := range os.Args {
+		logger.Debug(fmt.Sprintf("%v: %s", i, val))
+	}
+	var configLocation = os.Args[1]
+	fmt.Printf("Got file path %s\r\n", configLocation)
+
+	//	fmt.Println(ymlReader.WriteConf())
+	//configLocation := "C:\\src\\HealthBridge\\config.yml"
+
 	if len(configLocation) == 0 {
 		panic("No path supplied for config file")
 	}

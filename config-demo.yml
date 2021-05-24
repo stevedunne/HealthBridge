@@ -1,0 +1,37 @@
+global:
+  scrape_interval: 15  # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+health_configs:
+  - monitor_name: 'JaegerAgents'
+    monitor_item:
+      uri: 
+         ['http://DTINWGITRUN01.aus.amer.dell.com:14271/',
+         'http://DTINWGITRUN01.aus.amer.dell.com:14291/',
+         'http://dtinwr2csvc04.aus.amer.dell.com:14271/',
+         'http://dtinwr2csvc04.aus.amer.dell.com:14291/',
+         'http://dtinwweb01.aus.amer.dell.com:14271/',
+         'http://dtinwweb01.aus.amer.dell.com:14291/',
+         'http://dtinwweb02.aus.amer.dell.com:14271/',
+         'http://dtinwweb02.aus.amer.dell.com:14291/']
+      type: 'ping'
+  - monitor_name: 'JaegerCollector'
+    monitor_item:
+      uri: 
+         ['http://DTINWGITRUN01.aus.amer.dell.com:14269/',
+         'http://DTINWGITRUN01.aus.amer.dell.com:14289/',
+         'http://DTINWR2CSVC01.aus.amer.dell.com:14269/',
+         'http://DTINWR2CSVC01.aus.amer.dell.com:14289/',
+         'http://DTINWR2CSVC04.aus.amer.dell.com:14269/',
+         'http://DTINWR2CSVC04.aus.amer.dell.com:14289/',
+         'http://DTINWWEB01.aus.amer.dell.com:14269/',
+         'http://DTINWWEB01.aus.amer.dell.com:14289/']
+      type: 'ping'
+  - monitor_name: 'JaegerInjester'
+    monitor_item:
+      uri: 
+        - 'http://DTINWR2CSVC01.aus.amer.dell.com:14270/'
+      type: 'ping'
+  - monitor_name: 'kafka'
+    monitor_item:
+     uri: 
+       - 'http://10.167.197.254:9000/kafdrop/consumer/jaeger-injest-1'
+     type: 'kafdrop'

@@ -17,7 +17,7 @@ func TestPingFactory(t *testing.T) {
 		t.Errorf("Factory method failed %v", err)
 	}
 
-	name := m1.GetName()
+	name := m1.Identifier()
 
 	if name != "mon_1" {
 		t.Errorf("Got name %s", name)
@@ -40,7 +40,7 @@ func TestKafdropFactory(t *testing.T) {
 		t.Errorf("Factory method failed %v", err)
 	}
 
-	name := m1.GetName()
+	name := m1.Identifier()
 
 	if name != "mon_1" {
 		t.Errorf("Got name %s", name)

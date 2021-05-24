@@ -14,7 +14,7 @@ type Monitor interface {
 	Start()
 	Destroy()
 	RunHealthCheck() int
-	GetName() string
+	Identifier() string
 }
 
 type MonitorConfig struct {
@@ -50,8 +50,8 @@ func (m *MonitorConfig) Destroy() {
 }
 
 // Stops the ticker
-func (m *MonitorConfig) GetName() string {
-	return m.Name
+func (m *MonitorConfig) Identifier() string {
+	return fmt.Sprintf("%s_%s[%s]", m.MonitorType, m.Name, m.Uri)
 }
 
 func (m *MonitorConfig) getHost() string {

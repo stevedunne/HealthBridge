@@ -28,10 +28,10 @@ health_configs:
   - monitor_name: 'JaegerInjester'
     monitor_item:
       uri: 
-        - 'http://DTINWR2CSVC01.aus.amer.dell.com:14270/'
+        ['http://DTINWR2CSVC01.aus.amer.dell.com:14270/']
       type: 'ping'
   - monitor_name: 'kafka'
     monitor_item:
      uri: 
-       - 'http://10.167.197.254:9000/kafdrop/consumer/jaeger-injest-1'
+       ['http://10.167.197.254:9000/kafdrop/consumer/jaeger-injest-1']
      type: 'kafdrop'

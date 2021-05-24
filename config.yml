@@ -4,17 +4,17 @@ health_configs:
   - monitor_name: 'JaegerAgents'
     monitor_item:
       uri: 
-        - 'http://localhost:14271/'
-        - 'http://localhost:14271/' 
+        ['http://localhost:14271/',
+        'http://localhost:14271/' ]
       type: 'ping'
   - monitor_name: 'NSQ'
     monitor_item:
       uri: 
-        - 'http://localhost:4151/ping/'
+        ['http://localhost:4151/ping/']
       type: 'ping'
 
   - monitor_name: 'kafka'
     monitor_item:
      uri: 
-       - 'http://10.167.197.254:9000/kafdrop/consumer/jaeger-injest-1'
+       ['http://10.167.197.254:9000/kafdrop/consumer/jaeger-injest-1']
      type: 'kafdrop'

@@ -30,11 +30,16 @@ func (m *pingMonitorConfig) RunHealthCheck() int {
 	m.logger.Debug("Running health check", zap.String("Name", m.Name), zap.String("Uri", m.Uri))
 
 	//resp, err := http.Get(m.Uri)
-	_, err := http.Get(m.Uri)
+	resp, err := http.Get(m.Uri)
 	if err != nil {
 		m.logger.Warn("Read uri failed: ", zap.String("error", err.Error()))
+
+		if resp != nil && resp.Body != nil {
+			resp.Body.Close()
+		}
 		return 1
 	} else {
+		resp.Body.Close()
 		return 0
 	}
 }

@@ -29,7 +29,7 @@ type MetricUpdate struct {
 	Val  int
 }
 
-// MetricManager contains the channel to recieve metric data
+// MetricManager contains the channel to receive metric data
 type MetricManager struct {
 	Channel chan MetricUpdate
 	stopCh  chan struct{}

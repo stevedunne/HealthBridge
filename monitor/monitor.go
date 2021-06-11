@@ -73,7 +73,7 @@ func (m *Config) run(healthCheck func() int) {
 	for {
 		select {
 		case <-m.ticker.C:
-			m.logger.Debug("Tick recieved for monitor", zap.String("Name", m.Name))
+			m.logger.Debug("Tick received for monitor", zap.String("Name", m.Name))
 			m.logger.Debug(fmt.Sprintf("Got monitor %T", m))
 			i := healthCheck()
 			m.updateChannel <- metrics.MetricUpdate{Name: m.Name, Host: host, Type: m.MonitorType, Val: i}

@@ -13,6 +13,8 @@ import (
 	"go.uber.org/zap"
 )
 
+//Service is the code worker for the health check
+//
 type Service struct {
 	logger         *zap.Logger
 	metrics        *metrics.MetricManager
@@ -38,6 +40,7 @@ func NewService(serverPort int, log *zap.Logger) *Service {
 	}
 }
 
+//AddMonitor registers a new monitor instance
 func (s *Service) AddMonitor(typeName, name, uri string, pollingInterval int) {
 	s.logger.Debug(fmt.Sprintf("Creating new monitor for %s %s %s ", typeName, name, uri))
 

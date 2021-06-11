@@ -31,7 +31,7 @@ func (o secondSub) DoSomething() string {
 	return fmt.Sprintf("%s-%s", o.second, o.first)
 }
 
-func Factory(b bool) ibase {
+func factory(b bool) ibase {
 	if b {
 		return firstSub{
 			myBase{
@@ -39,22 +39,23 @@ func Factory(b bool) ibase {
 				second: "two",
 			},
 		}
-	} else {
-		return secondSub{
-			myBase{
-				first:  "one",
-				second: "two",
-			},
-		}
 	}
+
+	return secondSub{
+		myBase{
+			first:  "one",
+			second: "two",
+		},
+	}
+
 }
 
 func TestInheritance(t *testing.T) {
 
-	i1 := Factory(true)
+	i1 := factory(true)
 	fmt.Printf("Result i1: %s\r\n", i1.DoSomething())
 
-	i2 := Factory(false)
+	i2 := factory(false)
 	fmt.Printf("Result i1: %s\r\n", i2.DoSomething())
 
 	list := make(map[string]*ibase)

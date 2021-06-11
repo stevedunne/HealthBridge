@@ -7,7 +7,7 @@ import (
 
 	"healthBridge/logger"
 	"healthBridge/service"
-	"healthBridge/ymlReader"
+	"healthBridge/ymlreader"
 
 	_ "net/http/pprof"
 )
@@ -41,7 +41,7 @@ func main() {
 		logger.Debug(fmt.Sprintf("%v: %s", i, val))
 	}
 	//var configLocation = os.Args[1]
-	//	fmt.Println(ymlReader.WriteConf())
+	//	fmt.Println(ymlreader.WriteConf())
 	//	configLocation := "C:\\src\\HealthBridge\\config.yml"
 
 	fmt.Printf("Got file path %s\r\n", configLocation)
@@ -50,7 +50,7 @@ func main() {
 		panic("No path supplied for config file")
 	}
 
-	conf, err := ymlReader.ReadConf(configLocation)
+	conf, err := ymlreader.ReadConf(configLocation)
 	if err != nil {
 		panic(fmt.Errorf("Error loading yml configuration %v", err))
 	}
@@ -61,7 +61,7 @@ func main() {
 	svc := service.NewService(8080, logger)
 	for _, val := range conf.HealthConfigs {
 
-		for _, uri := range val.MonitorType.Uri {
+		for _, uri := range val.MonitorType.URI {
 			svc.AddMonitor(val.MonitorType.Type, val.MonitorName, uri, int(conf.GlobalConfig.ScrapeInterval))
 		}
 	}

@@ -1,19 +1,20 @@
-package ymlReader
+package ymlreader
 
 import (
 	"fmt"
 	"io/ioutil"
-	_ "log"
 
 	"gopkg.in/yaml.v3"
 )
 
-//https://github.com/prometheus/prometheus/blob/0a8912433a457b54a871df75e72afc3e45a31d5c/config/config.go
+// Config holds the global defaults and an array of health configs
+// https://github.com/prometheus/prometheus/blob/0a8912433a457b54a871df75e72afc3e45a31d5c/config/config.go
 type Config struct {
 	GlobalConfig  GlobalConfig    `yaml:"global"`
 	HealthConfigs []*HealthConfig `yaml:"health_configs,omitempty"`
 }
 
+//GlobalConfig represents global settings for the health monitors
 type GlobalConfig struct {
 	// How frequently to scrape targets by default.
 	ScrapeInterval int32 `yaml:"scrape_interval,omitempty"`
@@ -21,6 +22,7 @@ type GlobalConfig struct {
 	ScrapeTimeout int32 `yaml:"scrape_timeout,omitempty"`
 }
 
+//HealthConfig represents an individual monitors settings
 type HealthConfig struct {
 	// The job name to which the job label is set by default.
 	MonitorName string `yaml:"monitor_name"`
@@ -28,26 +30,28 @@ type HealthConfig struct {
 	MonitorType MonitorItem `yaml:"monitor_item"`
 }
 
+//MonitorItem contains the health monitor type and an array of the Uris
 type MonitorItem struct {
-	Uri  []string `yaml:"uri"`
+	URI  []string `yaml:"uri"`
 	Type string   `yaml:"type"`
 }
 
-func WriteConf() (string, error) {
+// writeConf creates a sample configuration and exports it as yml
+func writeConf() (string, error) {
 	item := HealthConfig{}
 	item.MonitorName = "test monitor name"
 	item.MonitorType.Type = "ping"
 	var uris [2]string
 	uris[0] = "test"
 	uris[1] = "other"
-	item.MonitorType.Uri = uris[:]
+	item.MonitorType.URI = uris[:]
 
 	item2 := HealthConfig{}
 	item2.MonitorName = "othername"
 	item2.MonitorType.Type = "ping"
 	var uris2 [1]string
 	uris2[0] = "first"
-	item2.MonitorType.Uri = uris2[:]
+	item2.MonitorType.URI = uris2[:]
 
 	var configs [2]*HealthConfig
 	configs[0] = &item
@@ -69,6 +73,7 @@ func WriteConf() (string, error) {
 	return "", nil
 }
 
+// ReadConf takes a filename and reads the settings
 func ReadConf(filename string) (*Config, error) {
 	fmt.Printf("Reading file: %s", filename)
 
@@ -102,8 +107,4 @@ func unmarshalFileContent(buffer []byte) (*Config, error) {
 		return nil, fmt.Errorf("in decoding: %v", err)
 	}
 	return c, nil
-}
-
-func SDMultiply(a, b int32) int32 {
-	return a * b
 }

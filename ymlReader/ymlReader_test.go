@@ -1,4 +1,4 @@
-package ymlReader
+package ymlreader
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 
 func _TestWriteConf(t *testing.T) {
 
-	res, err := WriteConf()
+	res, err := writeConf()
 
 	if err != nil {
 		t.Errorf("Ah fuck %v", err)
@@ -82,13 +82,13 @@ func _TestUnmarshallFileContents(t *testing.T) {
 	assert.IntEqual(1, len(config.HealthConfigs), t)
 	assert.StrEqual("serverpings", config.HealthConfigs[0].MonitorName, "", t)
 	assert.StrEqual("ping", config.HealthConfigs[0].MonitorType.Type, "", t)
-	assert.IntEqual(1, len(config.HealthConfigs[0].MonitorType.Uri), t)
-	assert.StrEqual("server1/ping", config.HealthConfigs[0].MonitorType.Uri[0], "", t)
+	assert.IntEqual(1, len(config.HealthConfigs[0].MonitorType.URI), t)
+	assert.StrEqual("server1/ping", config.HealthConfigs[0].MonitorType.URI[0], "", t)
 }
 
 func _TestMarshallFileContents(t *testing.T) {
 
-	config, err := WriteConf()
+	config, err := writeConf()
 	if err != nil {
 		fmt.Print(fmt.Errorf("Error %v", err))
 	}

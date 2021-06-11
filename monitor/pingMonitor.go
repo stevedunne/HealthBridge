@@ -9,14 +9,14 @@ import (
 )
 
 type pingMonitorConfig struct {
-	MonitorConfig
+	Config
 }
 
 func newPingMonitor(name, uri string, pollingInterval int, log *zap.Logger, ch chan<- metrics.MetricUpdate) *pingMonitorConfig {
 	monitor := &pingMonitorConfig{
-		MonitorConfig{
+		Config{
 			Name:            name,
-			Uri:             uri,
+			URI:             uri,
 			PollingInterval: pollingInterval,
 			updateChannel:   ch,
 			logger:          log,
@@ -27,21 +27,20 @@ func newPingMonitor(name, uri string, pollingInterval int, log *zap.Logger, ch c
 }
 
 func (m *pingMonitorConfig) RunHealthCheck() int {
-	m.logger.Debug("Running health check", zap.String("Name", m.Name), zap.String("Uri", m.Uri))
-
+	m.logger.Debug("Running health check", zap.String("Name", m.Name), zap.String("Uri", m.URI))
+	ret := 0
 	//resp, err := http.Get(m.Uri)
-	resp, err := http.Get(m.Uri)
+	resp, err := http.Get(m.URI)
 	if err != nil {
 		m.logger.Warn("Read uri failed: ", zap.String("error", err.Error()))
-
-		if resp != nil && resp.Body != nil {
-			resp.Body.Close()
-		}
-		return 1
-	} else {
-		resp.Body.Close()
-		return 0
+		ret = 1
 	}
+
+	if resp != nil && resp.Body != nil {
+		resp.Body.Close()
+	}
+
+	return ret
 }
 
 //The start method will start the internal ticker in the monitor

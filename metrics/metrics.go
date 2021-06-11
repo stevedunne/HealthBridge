@@ -21,6 +21,7 @@ var (
 	}, []string{"Name", "Type", "Host"})
 )
 
+// MetricUpdate - this encapsulates the information for a specifi cmetric
 type MetricUpdate struct {
 	Name string
 	Type string
@@ -28,11 +29,13 @@ type MetricUpdate struct {
 	Val  int
 }
 
+// MetricManager contains the channel to recieve metric data
 type MetricManager struct {
 	Channel chan MetricUpdate
 	stopCh  chan struct{}
 }
 
+// NewMetricManager creates a new MetricManager instance
 func NewMetricManager(l *zap.Logger) *MetricManager {
 	logger = l
 
@@ -67,24 +70,25 @@ func (m *MetricManager) updateGauge(name, metricType, host string, gaugeVal int)
 	gaugeHitCount.WithLabelValues(name, metricType, host).Inc()
 }
 
-//Provide access to the prometheus http handler to our web server
+// MetricEndpoint provides access to the prometheus http handler to our web server
 func (m *MetricManager) MetricEndpoint() http.Handler {
 	return promhttp.Handler()
 }
 
 //Run the metric manager - it will listen for metrics updates via the channel
-func (manager *MetricManager) Run() {
+func (m *MetricManager) Run() {
 	for {
 		select {
-		case record := <-manager.Channel:
+		case record := <-m.Channel:
 			logger.Debug(fmt.Sprintf("Received gauge update %s ", record.Name))
-			manager.updateGauge(record.Name, record.Type, record.Host, record.Val)
-		case <-manager.stopCh:
+			m.updateGauge(record.Name, record.Type, record.Host, record.Val)
+		case <-m.stopCh:
 			return
 		}
 	}
 }
 
-func (manager *MetricManager) Stop() {
-	close(manager.stopCh)
+// Stop closes the metricManagers stop channel
+func (m *MetricManager) Stop() {
+	close(m.stopCh)
 }

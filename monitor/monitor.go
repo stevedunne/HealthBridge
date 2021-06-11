@@ -10,6 +10,7 @@ import (
 	"go.uber.org/zap"
 )
 
+//Monitor provides the key methods to be implemented by any healy monitor
 type Monitor interface {
 	Start()
 	Destroy()
@@ -17,9 +18,10 @@ type Monitor interface {
 	Identifier() string
 }
 
-type MonitorConfig struct {
+//Config represents the config details for an individial monitor
+type Config struct {
 	Name            string
-	Uri             string
+	URI             string
 	PollingInterval int
 	MonitorType     string
 
@@ -30,7 +32,7 @@ type MonitorConfig struct {
 	Monitor
 }
 
-//factory method to create the specified type of monitor
+//NewMonitor factory method to create a specified type of monitor
 func NewMonitor(monitorType, name, uri string, pollingInterval int, log *zap.Logger, ch chan<- metrics.MetricUpdate) (Monitor, error) {
 	//logger.Debug()
 	switch monitorType {
@@ -43,29 +45,29 @@ func NewMonitor(monitorType, name, uri string, pollingInterval int, log *zap.Log
 	}
 }
 
-// Stops the ticker
-func (m *MonitorConfig) Destroy() {
+//Destroy stops the ticker
+func (m *Config) Destroy() {
 	m.logger.Debug("Destroying Monitor", zap.String("Name", m.Name))
 	m.ticker.Stop()
 }
 
-// Stops the ticker
-func (m *MonitorConfig) Identifier() string {
-	return fmt.Sprintf("%s_%s[%s]", m.MonitorType, m.Name, m.Uri)
+// Identifier creates an id for the monitor from its config
+func (m *Config) Identifier() string {
+	return fmt.Sprintf("%s_%s[%s]", m.MonitorType, m.Name, m.URI)
 }
 
-func (m *MonitorConfig) getHost() string {
-	url, err := url.Parse(m.Uri)
+func (m *Config) getHost() string {
+	url, err := url.Parse(m.URI)
 	if err != nil {
 		m.logger.Debug("Could not parse Uri", zap.Error(err))
-		return m.Uri
+		return m.URI
 	}
 	return url.Host
 }
 
 //run is an internal method that will run as a goroutine running the
 //health check and publishing the results to the channel
-func (m *MonitorConfig) run(healthCheck func() int) {
+func (m *Config) run(healthCheck func() int) {
 	m.logger.Debug("Running Monitor", zap.String("Name", m.Name))
 	host := m.getHost()
 	for {

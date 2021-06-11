@@ -6,13 +6,16 @@ import (
 )
 
 var (
+	// Level - the current logging level
 	Level zapcore.Level
 )
 
+// Flags registers the command options for logging
 func Flags() {
 	zap.LevelFlag("log-level", zap.ErrorLevel, "set the logging level")
 }
 
+// NewLogger creates a new instance of the logger
 func NewLogger() (*zap.Logger, error) {
 
 	var config = getDevConfig()

@@ -10,7 +10,7 @@ import (
 )
 
 type kafdropMonitorConfig struct {
-	MonitorConfig
+	Config
 }
 
 // The purpose of this monitor is to extract the
@@ -18,9 +18,9 @@ type kafdropMonitorConfig struct {
 //
 func newKafdropMonitor(name, uri string, pollingInterval int, log *zap.Logger, ch chan<- metrics.MetricUpdate) *kafdropMonitorConfig {
 	monitor := &kafdropMonitorConfig{
-		MonitorConfig{
+		Config{
 			Name:            name,
-			Uri:             uri,
+			URI:             uri,
 			PollingInterval: pollingInterval,
 			updateChannel:   ch,
 			logger:          log,
@@ -33,7 +33,11 @@ func newKafdropMonitor(name, uri string, pollingInterval int, log *zap.Logger, c
 func extractLagData(doc *goquery.Document) int {
 
 	nodeList := doc.Find("#topic-0-table td b")
-	res := nodeList.Get(1).FirstChild.Data
+
+	firstNode := nodeList.Get(1)
+
+	firstChild := firstNode.FirstChild
+	res := firstChild.Data
 
 	iRes, err := strconv.ParseInt(res, 10, 32)
 	if err != nil {
@@ -42,19 +46,21 @@ func extractLagData(doc *goquery.Document) int {
 	return int(iRes)
 }
 
-func (m *kafdropMonitorConfig) RunHealthCheck() int {
-	m.logger.Debug("Running health check", zap.String("Name", m.Name), zap.String("Uri", m.Uri))
+//RunHealthCheck performs the kafdrop health check returning
+//the number of unprocessed items or -1 in the event of an error
+func (k *kafdropMonitorConfig) RunHealthCheck() int {
+	k.logger.Debug("Running health check", zap.String("Name", k.Name), zap.String("Uri", k.URI))
 
-	doc, err := goquery.NewDocument(m.Uri)
+	doc, err := goquery.NewDocument(k.URI)
 	if err != nil {
-		m.logger.Warn("Failed to read Uri", zap.String("uri", m.Uri), zap.Error(err))
+		k.logger.Warn("Failed to read Uri", zap.String("uri", k.URI), zap.Error(err))
 		return -1
 	}
 
 	return extractLagData(doc)
 }
 
-//The start method will start the internal ticker in the monitor
+//Start  will start the internal ticker in the monitor
 //kicking off the polling process
 //and run a goroutine to handle the tick events and run the health check
 func (k *kafdropMonitorConfig) Start() {

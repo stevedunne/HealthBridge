@@ -1,22 +1,11 @@
 package assert
 
 import (
-	_ "fmt"
 	"reflect"
 	"testing"
 )
 
-// type Assert struct{
-// 	T *testing.T
-// }
-
-// func NewTesting(testing *testing.T) Assert {
-// 	a:=  Assert{ }
-// 	a.T = testing
-// 	return a
-// }
-
-// Checks if the error object is nil
+// Error Checks if the error object is nil
 func Error(err error, t *testing.T) {
 	if err == nil {
 		t.Log("Passed")
@@ -25,6 +14,7 @@ func Error(err error, t *testing.T) {
 	}
 }
 
+//NotNil tests if an object is initialised
 func NotNil(actual interface{}, message string, t *testing.T) {
 	obj := reflect.ValueOf(actual)
 	if obj.IsNil() {
@@ -34,6 +24,7 @@ func NotNil(actual interface{}, message string, t *testing.T) {
 	}
 }
 
+//IsNil tests for an uninitialised object
 func IsNil(actual interface{}, message string, t *testing.T) {
 	obj := reflect.ValueOf(actual)
 	if obj.IsNil() {
@@ -43,7 +34,7 @@ func IsNil(actual interface{}, message string, t *testing.T) {
 	}
 }
 
-// Checks if the actual string matches the expected string
+//StrEqual Checks if the actual string matches the expected string
 func StrEqual(expected, actual, message string, t *testing.T) {
 	if expected == actual {
 		t.Log("Passed")
@@ -52,7 +43,7 @@ func StrEqual(expected, actual, message string, t *testing.T) {
 	}
 }
 
-// Checks if the actual matches the expected string
+//IntEqual Checks if the actual matches the expected int
 func IntEqual(expected, actual int, t *testing.T) {
 	if expected == actual {
 		t.Log("Passed")

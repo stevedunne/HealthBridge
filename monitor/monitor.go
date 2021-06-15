@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"healthBridge/metrics"
+	"healthBridge/reader"
 	"net/url"
+
 	"time"
 
 	"go.uber.org/zap"
@@ -16,6 +18,8 @@ type Monitor interface {
 	Destroy()
 	RunHealthCheck() int
 	Identifier() string
+
+	UpdateClient(reader.IWebClient)
 }
 
 //Config represents the config details for an individial monitor
@@ -25,16 +29,15 @@ type Config struct {
 	PollingInterval int
 	MonitorType     string
 
+	WebClient reader.IWebClient
+
 	logger        *zap.Logger
 	ticker        *time.Ticker // periodic ticker
 	updateChannel chan<- metrics.MetricUpdate
-
-	Monitor
 }
 
 //NewMonitor factory method to create a specified type of monitor
 func NewMonitor(monitorType, name, uri string, pollingInterval int, log *zap.Logger, ch chan<- metrics.MetricUpdate) (Monitor, error) {
-	//logger.Debug()
 	switch monitorType {
 	case "ping":
 		return newPingMonitor(name, uri, pollingInterval, log, ch), nil
@@ -79,4 +82,10 @@ func (m *Config) run(healthCheck func() int) {
 			m.updateChannel <- metrics.MetricUpdate{Name: m.Name, Host: host, Type: m.MonitorType, Val: i}
 		}
 	}
+}
+
+//UpdateClient sets an alternate webClient - use for testing
+func (m *Config) UpdateClient(client reader.IWebClient) {
+	m.logger.Debug("Updating web client")
+	m.WebClient = client
 }

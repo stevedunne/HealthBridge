@@ -69,10 +69,7 @@ var (
     </div>
 </div>
 <div class="container">
-
-
 <h2>Kafka Consumer: jaeger-injest-1</h2>
-
 <div class="container-fluid pl-0">
     <div id="overview">
         <h3>Overview</h3>
@@ -85,12 +82,10 @@ var (
             </tbody>
         </table>
     </div>
-
     <div id="topics">
             <h3>    <a href="#topic-0-table" class="toggle-link" data-toggle-target="#topic-0-table"><i
                 class="fa fa-chevron-circle-down"></i></a>
- Topic: <a
-                        href="/kafdrop/topic/jaeger-spans">jaeger-spans</a></h3>
+ Topic: <a href="/kafdrop/topic/jaeger-spans">jaeger-spans</a></h3>
             <div id="topic-0-table">
                 <p>
                 <table class="table table-bordered table-sm">
@@ -121,7 +116,6 @@ var (
             </div>
     </div>
 </div>
-
 </div>
 <div class="pb-0 mt-5 mb-4">
     <div class="container">

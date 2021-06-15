@@ -2,7 +2,6 @@ package monitor
 
 import (
 	"healthBridge/metrics"
-	"net/http"
 	"time"
 
 	"go.uber.org/zap"
@@ -29,15 +28,11 @@ func newPingMonitor(name, uri string, pollingInterval int, log *zap.Logger, ch c
 func (m *pingMonitorConfig) RunHealthCheck() int {
 	m.logger.Debug("Running health check", zap.String("Name", m.Name), zap.String("Uri", m.URI))
 	ret := 0
-	//resp, err := http.Get(m.Uri)
-	resp, err := http.Get(m.URI)
+
+	_, err := m.WebClient.Get(m.URI, m.logger)
 	if err != nil {
 		m.logger.Warn("Read uri failed: ", zap.String("error", err.Error()))
 		ret = 1
-	}
-
-	if resp != nil && resp.Body != nil {
-		resp.Body.Close()
 	}
 
 	return ret

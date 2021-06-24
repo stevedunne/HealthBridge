@@ -2,6 +2,7 @@ package monitor
 
 import (
 	"healthBridge/metrics"
+	"healthBridge/reader"
 	"time"
 
 	"go.uber.org/zap"
@@ -22,6 +23,7 @@ func newPingMonitor(name, uri string, pollingInterval int, log *zap.Logger, ch c
 			MonitorType:     "ping",
 		},
 	}
+	monitor.WebClient = reader.NewWebClient()
 	return monitor
 }
 

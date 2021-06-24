@@ -2,6 +2,7 @@ package monitor
 
 import (
 	"healthBridge/metrics"
+	"healthBridge/reader"
 	"strconv"
 	"time"
 
@@ -27,6 +28,7 @@ func newKafdropMonitor(name, uri string, pollingInterval int, log *zap.Logger, c
 			MonitorType:     "kapdrop",
 		},
 	}
+	monitor.WebClient = reader.NewWebClient()
 	return monitor
 }
 

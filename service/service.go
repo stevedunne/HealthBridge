@@ -47,7 +47,7 @@ func (s *Service) AddMonitor(typeName, name, uri string, pollingInterval int) {
 	m, err := monitor.NewMonitor(typeName, name, uri, pollingInterval, s.logger, s.metrics.Channel)
 
 	if err != nil {
-		s.logger.Warn(fmt.Sprintf("Failed to create monitor for %s %s [%s]", typeName, name, uri))
+		s.logger.Warn("Failed to create monitor", zap.String("type", typeName), zap.String("name", name), zap.String("uri", uri), zap.Error(err))
 	} else {
 		s.monitors[m.Identifier()] = m
 		s.logger.Debug(fmt.Sprintf("Added monitor %s [%T] ", m.Identifier(), m))

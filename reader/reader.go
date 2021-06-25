@@ -24,7 +24,7 @@ func NewWebClient() IWebClient {
 func (w *WebClient) Get(uri string, l *zap.Logger) (string, error) {
 	resp, err := http.Get(uri)
 	if err != nil {
-		l.Warn("Read uri failed: ", zap.String("error", err.Error()))
+		l.Warn("Read uri failed: ", zap.String("uri", uri))
 		return "", err
 	}
 

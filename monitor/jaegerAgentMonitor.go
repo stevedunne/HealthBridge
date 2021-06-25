@@ -72,7 +72,7 @@ func (m *jaegerAgentMonitorConfig) RunHealthCheck() int {
 	for _, v := range lines {
 		if strings.Contains(v, "process_virtual_memory_bytes") {
 			strMem = v
-			break
+			//	break - dont break as we actaully want the last one
 		}
 	}
 
@@ -92,6 +92,7 @@ func (m *jaegerAgentMonitorConfig) RunHealthCheck() int {
 	//	get the heap diag info  [http://localhost:14271/debug/pprof/heap?debug=1]
 	//  save to disk
 	// return a 1 if a file is saved
+	m.logger.Info("Virtual Memory for agent: ", zap.String("Name", m.Name), zap.Float64("memoryUsage", memoryUsage), zap.String("Host", m.getHost()))
 	if memoryUsage > 1000000000 {
 		//save the file
 

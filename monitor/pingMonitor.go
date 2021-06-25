@@ -33,7 +33,7 @@ func (m *pingMonitorConfig) RunHealthCheck() int {
 
 	_, err := m.WebClient.Get(m.URI, m.logger)
 	if err != nil {
-		m.logger.Warn("Read uri failed: ", zap.String("error", err.Error()))
+		m.logger.Warn("Read uri failed", zap.String("Name", m.Name), zap.String("Host", m.getHost()))
 		ret = 1
 	}
 

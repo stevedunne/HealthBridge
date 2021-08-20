@@ -21,3 +21,20 @@ Initial version
 Add pprof for performance profiling 
 - go to http://localhost:8080/debug/pprof/ to view performance metrics
 
+
+Test Coverage:
+from - https://blog.golang.org/cover
+Generate cover.txt
+    go test -coverprofile cover.txt .\...
+
+Generate html report from cover.txt
+    go tool cover -html cover.txt -o cover.html
+
+
+Releases
+
+0.3 Added jeager agent monitor to take a dump of the diagnostic logs in the event of a memory spike
+
+0.5 Updated JaegerAgentMonitor to Memorymonitor
+    Changed output to folder containing heap, allocs, version and health info
+    

@@ -46,4 +46,4 @@ health_configs:
          'http://dtinwweb01.aus.amer.dell.com:14291/',
          'http://dtinwweb02.aus.amer.dell.com:14271/',
          'http://dtinwweb02.aus.amer.dell.com:14291/']
-      type: 'jaeger-agent'
+      type: 'memory'

@@ -1,8 +1,8 @@
 global:
   scrape_interval: 15  # Set the scrape interval to every 15 seconds. Default is every 1 minute.
 health_configs:
-  - monitor_name: 'JaegerAgentMemory'
+  - monitor_name: 'Memory'
     monitor_item:
       uri: 
          ['http://localhost:14271/']
-      type: 'jaeger-agent'
+      type: 'memory'

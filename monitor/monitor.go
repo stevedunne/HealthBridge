@@ -37,14 +37,15 @@ type Config struct {
 }
 
 //NewMonitor factory method to create a specified type of monitor
+//TODO - DI solution? or investigate if we can have a central regsiter that each monitor can add itsself to
 func NewMonitor(monitorType, name, uri string, pollingInterval int, log *zap.Logger, ch chan<- metrics.MetricUpdate) (Monitor, error) {
 	switch monitorType {
 	case "ping":
 		return newPingMonitor(name, uri, pollingInterval, log, ch), nil
 	case "kafdrop":
 		return newKafdropMonitor(name, uri, pollingInterval, log, ch), nil
-	case "jaeger-agent":
-		return newJaegerAgentMonitor(name, uri, 120, log, ch), nil
+	case "memory":
+		return newMemoryMonitor(name, uri, 120, log, ch), nil
 	default:
 		return nil, errors.New("No such monitor type '%s'")
 	}

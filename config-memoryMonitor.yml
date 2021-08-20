@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15  # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+health_configs:
+  - monitor_name: 'JaegerAgentMemory'
+    monitor_item:
+      uri: 
+         ['http://DTINWGITRUN01.aus.amer.dell.com:14271/',
+         'http://DTINWGITRUN01.aus.amer.dell.com:14291/',
+         'http://dtinwr2csvc04.aus.amer.dell.com:14271/',
+         'http://dtinwr2csvc04.aus.amer.dell.com:14291/',
+         'http://dtinwweb01.aus.amer.dell.com:14271/',
+         'http://dtinwweb01.aus.amer.dell.com:14291/',
+         'http://dtinwweb02.aus.amer.dell.com:14271/',
+         'http://dtinwweb02.aus.amer.dell.com:14291/']
+      type: 'memory'

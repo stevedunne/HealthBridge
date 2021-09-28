@@ -15,7 +15,7 @@ import (
 func main() {
 
 	var flagvar int
-	flag.IntVar(&flagvar, "port", 8080, "the port number for the server to run on. Default 8080.")
+	flag.IntVar(&flagvar, "port", 8080, "The port number for the server to listen on. Default 8080.")
 
 	//	configLocation := "C:\\src\\HealthBridge\\config.yml"
 	var configLocation string
